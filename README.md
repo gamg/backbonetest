@@ -1,64 +1,34 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Backbone Systems Challenge
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Primero tuve dudas al momento de pensar el ¿cómo iba a utilizar los datos proporcionados? (los que están dentro de los archivos xsl, txt y xml). Pense en exportar el archivo xls o txt hacia la base de datos para luego crear un modelo dentro del proyecto y poder gestionar más fácil la búsqueda de los ZipCodes. Pero una de las cosas que ustedes resaltaban era que el tiempo de respuesta promedio tenía que ser menor a 300ms. Por lo tanto tomé la decisión de no utilizar base de datos y trabajar la búsqueda directamente con el archivo .txt, porque cuando se trabaja con archivos el tiempo de respuesta es más rápido comparandolo con el de una base de datos. Eso no quiere decir que las base de datos no deberían utilizarce, no para nada. Solo tomé esa decisión para hacer la búsqueda más rápida. Por otro lado, para mejorar la velocidad de respuesta, se utilizó la Cache mediante archivos.
 
-## About Laravel
+## Sobre este proyecto:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Los archivos creados dentro del proyecto de Laravel fueron los siguientes:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- app/Http/Controllers/Api/ZipCodeController.php: Controlador que contiene el método para recibir las peticiónes
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- app/Traits/ZipCodeData.php: Este Trait se creó para tener los métodos que tendrán toda la lógica.
 
-## Learning Laravel
+  - El método fillData() recorre el archivo buscando el zip_code correspondiente para agregar los datos al array que se devuelve en formato Json.
+  - El método cleanString() permite eliminar los acentos de las cadenas de caracteres que se gestionan mientras se recorre el archivo.
+  - El método cache() es el encargado de almacenar en cache el array final y también lo devuelve en dado caso que se envíe un zip_code repetido. Esto con el fin de evitar buscar de nuevo en el archivo si se está solicitando la información de un código encontrado anteriormente.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- routes/api.php: Esto archivo no fue creado ya que viene por defecto en Laravel, pero se usó para agregar la ruta correspondiente.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- tests/Feature/ZipCodeTest.php: Contiene dos tests, una para verificar que se realice la búsqueda correctamente y devuelva la información adecuada. Y otro test encargado de verificar cuando un zip_code no se encuentra dentro del archivo.
 
-## Laravel Sponsors
+## Instalación
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Pasos para instalar este proyecto en tu entorno local
 
-### Premium Partners
+- git clone https://github.com/gamg/backbonetest.git
+- composer install
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Para ejecutar todos los Tests:
 
-## Contributing
+- php artisan test
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Para ejecutar un test específico:
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- php artisan test ./tests/Feature/ZipCodeTest.php
