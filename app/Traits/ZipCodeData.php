@@ -79,4 +79,20 @@ trait ZipCodeData
         $new = 'AEIOUaeiou';
         return strtr($string, utf8_decode($old), $new);
     }
+
+    /**
+     * Find data from Cache or add it
+     *
+     * @param  $callback
+     * @param  string  $zipCode
+     */
+    public function cache($callback, string $zipCode)
+    {
+        if (cache()->has($zipCode)) {
+            $this->result = cache()->get($zipCode);
+        } else {
+            $callback($zipCode);
+            cache()->put($zipCode, $this->result);
+        }
+    }
 }

@@ -18,7 +18,10 @@ class ZipCodeController extends Controller
      */
     public function info($zipCode)
     {
-        $this->fillData($zipCode);
+        $this->cache(function ($zipCode){
+            $this->fillData($zipCode);
+        }, $zipCode);
+
         return response()->json($this->result, $this->status);
     }
 }
