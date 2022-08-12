@@ -32,7 +32,7 @@ trait ZipCodeData
      */
     public function fillData(string $zipCode)
     {
-        $file = fopen(storage_path("app/data.txt"), 'r');
+        $file = fopen(public_path("data.txt"), 'r');
 
         while(!feof($file)) {
             $line = trim(fgets($file));
