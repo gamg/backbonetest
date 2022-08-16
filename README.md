@@ -1,5 +1,7 @@
 # Backbone Systems Challenge
 
+https://zipcodestest.herokuapp.com/api/zip-codes/{zip_code}
+
 Primero tuve dudas al momento de pensar el ¿cómo iba a utilizar los datos proporcionados? (los que están dentro de los archivos xsl, txt y xml). Pense en exportar el archivo xls o txt hacia la base de datos para luego crear un modelo dentro del proyecto y poder gestionar más fácil la búsqueda de los ZipCodes. Pero una de las cosas que ustedes resaltaban era que el tiempo de respuesta promedio tenía que ser menor a 300ms. Por lo tanto tomé la decisión de no utilizar base de datos y trabajar la búsqueda directamente con el archivo .txt, porque cuando se trabaja con archivos el tiempo de respuesta es más rápido comparandolo con el de una base de datos. Eso no quiere decir que las base de datos no deberían utilizarce, no para nada. Solo tomé esa decisión para hacer la búsqueda más rápida. Por otro lado, para mejorar la velocidad de respuesta, se utilizó la Cache mediante archivos.
 
 ## Sobre este proyecto:
